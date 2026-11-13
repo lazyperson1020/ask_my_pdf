@@ -103,6 +103,15 @@ async function findChunks(documentId, question, history) {
 
 const NO_ANSWER = "I don't know based on this document.";
 
+// Turn an error into a short message for the user
+function errorMessage(err) {
+  // 429 = Gemini's free daily/minute limit was reached
+  if (err.status === 429 || String(err.message).includes("429")) {
+    return "The AI usage limit was reached. Please try again later.";
+  }
+  return "Something went wrong: " + err.message;
+}
+
 // 3. Ask a question about an uploaded PDF (returns the full answer at once).
 app.post("/ask", async (req, res) => {
   try {
@@ -122,7 +131,7 @@ app.post("/ask", async (req, res) => {
     res.json({ answer, sources: chunks });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Something went wrong: " + err.message });
+    res.status(500).json({ error: errorMessage(err) });
   }
 });
 
@@ -150,7 +159,7 @@ io.on("connection", (socket) => {
       socket.emit("answer-done", chunks); // the sources
     } catch (err) {
       console.error(err);
-      socket.emit("answer-error", "Something went wrong: " + err.message);
+      socket.emit("answer-error", errorMessage(err));
     }
   });
 });
