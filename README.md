@@ -113,6 +113,17 @@ Open http://localhost:5173, upload a PDF (try `sample.pdf`), wait for "PDF ready
 
 **Note:** Atlas needs a few seconds to index new chunks after an upload. If your first question returns "I don't know based on this document." right after uploading, wait 5 to 10 seconds and ask again.
 
+## Deploy (Render)
+
+The server also serves the built React app, so the whole project deploys as one web service.
+
+1. In Atlas → Network Access, allow access from anywhere (`0.0.0.0/0`).
+2. On https://render.com create a **Web Service** from this repo:
+   - Build Command: `npm run build`
+   - Start Command: `npm start`
+   - Environment variables: `MONGO_URI`, `GEMINI_API_KEY`, `CLIENT_URL` (your Render URL). Render sets `PORT` itself.
+3. Every push to `main` redeploys the site. On the free plan the app sleeps when idle, so the first visit can take up to a minute.
+
 ## API
 
 | Method | Route     | Body                         | Returns                         |

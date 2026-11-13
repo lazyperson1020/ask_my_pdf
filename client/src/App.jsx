@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-// Address of our Express server
-const API_URL = "http://localhost:5000";
+// Address of our Express server: localhost while developing, the site itself once deployed
+const API_URL = import.meta.env.DEV ? "http://localhost:5000" : window.location.origin;
 
 // One Socket.IO connection to the server, used to stream answers
 const socket = io(API_URL);

@@ -1,6 +1,7 @@
 // AskMyPDF server: upload a PDF, then ask questions about it.
 require("dotenv").config();
 const http = require("http");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -17,6 +18,9 @@ const server = http.createServer(app); // Express and Socket.IO share this serve
 const io = new Server(server, { cors: { origin: process.env.CLIENT_URL } });
 app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
+
+// Serve the built React app (client/dist) so the whole project runs as one website
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Keep uploaded files in memory only (never saved to disk). PDFs only, max 10 MB.
 const upload = multer({
