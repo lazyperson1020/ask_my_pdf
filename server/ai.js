@@ -66,8 +66,12 @@ async function readPdfVisuals(pdfBuffer, transcribe) {
 - one "text" item with all the text on the page, in reading order
 - one "image" item for each chart, diagram, photo or figure on the page, described as below`
     : `Return one "image" item for each chart, graph, diagram, photo, figure, or table drawn as an
-image. Do NOT return the normal text of the PDF. Skip logos, icons and decorations.
-If there are no such visuals, return an empty list.`;
+image. The text of the PDF is extracted separately, so:
+- Do NOT return the normal text of the PDF, and do NOT summarise or describe pages.
+- A page that is only text (headings, paragraphs, bullet lists) is NOT a visual, even though
+  you see it as a picture of the page. Never describe a page as a "screenshot".
+- Skip logos, icons, decorations and backgrounds.
+Most PDFs have few or no visuals. If there are none, return an empty list [].`;
 
   const response = await ai.models.generateContent({
     model: config.VISION_MODEL,
