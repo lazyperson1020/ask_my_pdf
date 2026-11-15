@@ -1,0 +1,17 @@
+{
+  "name": "askmypdf-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server that lets AI assistants search and ask questions about your AskMyPDF documents",
+  "type": "module",
+  "bin": {
+    "askmypdf-mcp": "server.js"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}
